@@ -14,13 +14,13 @@
       padding: 20px;
     }
     h1 {
-      color: #1976d2;
+      color: #42a5f5;
     }
     .question {
       margin-bottom: 20px;
     }
     button {
-      background: #1976d2;
+      background: #42a5f5;
       color: white;
       border: none;
       padding: 10px 20px;
@@ -38,29 +38,34 @@
 <body>
   <h1>¿Qué nivel de tristeza estás sintiendo ahora?</h1>
   <form id="testForm"></form>
-  <button onclick="calcularResultado()" type="button">Ver resultado</button>
+  <button onclick="calcularResultado()">Ver resultado</button>
   <div class="result" id="resultado"></div>
 
   <script>
     const preguntas = [
-      "¿Sientes que has perdido algo o a alguien importante recientemente?",
-      "¿Has sentido ganas de llorar, incluso sin saber por qué?",
-      "¿Sientes que tienes menos energía o motivación de lo normal?",
-      "¿Te sientes más solo/a o desconectado/a que de costumbre?",
-      "¿Sientes que las cosas que antes disfrutabas ya no te atraen igual?",
-      "¿Sientes un nudo en la garganta, opresión en el pecho o fatiga emocional?",
-      "¿Tienes pensamientos negativos sobre ti o tu entorno últimamente?",
-      "¿Sientes una sensación de vacío o nostalgia que no sabes de dónde viene?",
-      "¿Piensas que las cosas no van a mejorar pronto?",
-      "¿Te cuesta levantarte o encontrar sentido en lo cotidiano?"
+      "¿Cómo te sientes al comenzar el día?",
+      "¿Sientes que algo te pesa emocionalmente?",
+      "¿Tienes ganas de hacer las cosas que normalmente disfrutas?",
+      "¿Has sentido necesidad de llorar últimamente?",
+      "¿Cómo te ha afectado pensar en algo que perdiste?",
+      "¿Te sientes con energía para hablar con alguien?",
+      "¿Sientes que las cosas tienen sentido ahora mismo?",
+      "¿Qué tan conectado/a te sientes con los demás?",
+      "¿Te ha costado dormir o descansar últimamente?",
+      "¿Cómo describirías tu estado emocional ahora mismo?"
     ];
 
     const opciones = [
-      "No, me siento bien.",
-      "Un poco, pero lo manejo.",
-      "Sí, me siento algo triste.",
-      "Siento un dolor emocional fuerte.",
-      "Estoy muy afectado/a, con una profunda tristeza."
+      ["Con calma, sin muchas emociones.","Un poco apagado/a.","Triste, pero funcional.","Con mucho peso emocional.","Vacío/a, sin ganas de nada."],
+      ["No, estoy tranquilo/a.","Un poco.","Sí, con cierta frecuencia.","Sí, casi todo el tiempo.","Constantemente, incluso sin razón clara."],
+      ["Sí, totalmente.","Un poco menos que antes.","No mucho.","Casi nada.","No tengo ganas de nada."],
+      ["No, para nada.","Tal vez una vez.","Sí, un par de veces.","Sí, varias veces.","Sí, y a menudo sin saber por qué."],
+      ["No me afecta mucho.","Me genera nostalgia.","Me entristece notablemente.","Me duele bastante.","Me paraliza emocionalmente."],
+      ["Sí, sin problema.","Prefiero el silencio.","Me cuesta buscar a alguien.","Evito todo contacto.","Me siento totalmente desconectado/a."],
+      ["Sí, todo parece estar bien.","A veces me lo cuestiono.","Estoy confundido/a.","No le encuentro sentido a muchas cosas.","Nada tiene sentido últimamente."],
+      ["Muy conectado/a.","Más o menos.","Un poco aislado/a.","Muy solo/a.","Completamente desconectado/a."],
+      ["No, duermo bien.","A veces me desvelo.","Me cuesta descansar.","Tengo insomnio frecuente.","Estoy agotado/a física y emocionalmente."],
+      ["Sereno/a.","Triste leve.","Triste constante.","Con dolor emocional fuerte.","Siento desesperanza o vacío profundo."]
     ];
 
     const form = document.getElementById("testForm");
@@ -68,7 +73,7 @@
       const div = document.createElement("div");
       div.classList.add("question");
       div.innerHTML = `<p>${i + 1}. ${pregunta}</p>`;
-      opciones.forEach((op, j) => {
+      opciones[i].forEach((op, j) => {
         div.innerHTML += `<label><input type="radio" name="p${i}" value="${j + 1}"> ${op}</label><br>`;
       });
       form.appendChild(div);
@@ -82,14 +87,33 @@
           total += parseInt(respuesta.value);
         }
       }
+
       let resultado = "";
-      if (total <= 16) resultado = "Nivel: Desánimo / Apatía leve";
-      else if (total <= 24) resultado = "Nivel: Tristeza leve / Melancolía";
-      else if (total <= 32) resultado = "Nivel: Tristeza moderada";
-      else if (total <= 40) resultado = "Nivel: Dolor emocional profundo";
-      else resultado = "Nivel: Desesperanza / Desolación";
+      let urlConsejo = "";
+
+      if (total <= 16) {
+        resultado = "Nivel: Desánimo / Apatía leve";
+        urlConsejo = "consejos-nivel1.html";
+      } else if (total <= 24) {
+        resultado = "Nivel: Tristeza leve / Melancolía";
+        urlConsejo = "consejos-nivel2.html";
+      } else if (total <= 32) {
+        resultado = "Nivel: Tristeza moderada";
+        urlConsejo = "consejos-nivel3.html";
+      } else if (total <= 40) {
+        resultado = "Nivel: Dolor emocional profundo";
+        urlConsejo = "consejos-nivel4.html";
+      } else {
+        resultado = "Nivel: Desesperanza / Desolación";
+        urlConsejo = "consejos-nivel5.html";
+      }
 
       document.getElementById("resultado").innerText = resultado;
+
+      // Redirección automática
+      setTimeout(() => {
+        window.location.href = urlConsejo;
+      }, 4000);
     }
   </script>
 </body>
